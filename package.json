@@ -1,0 +1,19 @@
+{
+  "name": "openapi-to-jmx",      
+  "version": "1.0.6",
+  "description": "Convert OpenAPI YAML,Json to JMeter .jmx test plan Group by tags as simple controller ",
+  "main": "index.js",
+  "bin": {
+    "openapi2jmx": "./index.js"  
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["openapi", "jmeter", "cli"],
+  "author": "thoaikx",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "xmlbuilder": "^15.1.1"
+  }
+}

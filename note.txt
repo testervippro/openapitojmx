@@ -1,0 +1,1 @@
+jmeter -n -t test_plan.jmx -l results.csv && jmeter -g results.csv -o dashboard

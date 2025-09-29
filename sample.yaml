@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  version: 1.0.0
+
+paths:
+  /api/v1/single-tag-endpoint:
+    get:
+      summary: "Endpoint with a single tag"
+      tags:
+        - Config
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/multi-tag-endpoint:
+    post:
+      summary: "Endpoint with multiple tags"
+      tags:
+        - Donation
+        - Payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  example: 100
+                currency:
+                  type: string
+                  example: USD
+      responses:
+        '200':
+          description: OK
