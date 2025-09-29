@@ -22,10 +22,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Download JMeter
+      # Step 3: Download Apache JMeter
       - name: Download Apache JMeter
         run: |
-          curl -L -o apache-jmeter.tgz https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.7.0.tgz
+          curl -L -o apache-jmeter.tgz https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.7.0.tgz
           tar -xzf apache-jmeter.tgz
           mv apache-jmeter-5.7.0 apache-jmeter
 
@@ -45,3 +45,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./html-report
+          publish_branch: gh-pages
+          force_orphan: true
