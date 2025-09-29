@@ -17,23 +17,23 @@ jobs:
 
       # Step 2: Pull JMeter Docker image
       - name: Pull JMeter Docker image
-        run: docker pull justb4/jmeter:5.7.0
+        run: docker pull justb4/jmeter
 
       # Step 3: Run JMeter test plan
       - name: Run JMeter Test
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}:/tests \
-            justb4/jmeter:5.7.0 \
-            -n -t /tests/my_test_plan.jmx -l /tests/results.jtl
+            -v ${{ github.workspace }}:/mnt/jmeter \
+            justb4/jmeter:5.5 \
+            -n -t /mnt/jmeter/my_test_plan.jmx -l /mnt/jmeter/results.jtl
 
       # Step 4: Generate HTML report
       - name: Generate HTML Report
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}:/tests \
-            justb4/jmeter:5.7.0 \
-            -g /tests/results.jtl -o /tests/html-report
+            -v ${{ github.workspace }}:/mnt/jmeter \
+            justb4/jmeter:5.5 \
+            -g /mnt/jmeter/results.jtl -o /mnt/jmeter/html-report
 
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
