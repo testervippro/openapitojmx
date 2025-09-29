@@ -1,4 +1,4 @@
-name: JMeter Performance Test
+name: JMeter Performance Test with Docker
 
 on:
   push:
@@ -15,34 +15,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Java
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      # Step 2: Pull JMeter Docker image
+      - name: Pull JMeter Docker image
+        run: docker pull justb4/jmeter:5.7.0
 
-      # Step 3: Download Apache JMeter
-      - name: Download Apache JMeter
-        run: |
-          curl -L -o apache-jmeter.tgz https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.7.0.tgz
-          tar -xzf apache-jmeter.tgz
-          mv apache-jmeter-5.7.0 apache-jmeter
-
-      # Step 4: Run JMeter test
+      # Step 3: Run JMeter test plan
       - name: Run JMeter Test
         run: |
-          ./apache-jmeter/bin/jmeter -n -t my_test_plan.jmx -l results.jtl
+          docker run --rm \
+            -v ${{ github.workspace }}:/tests \
+            justb4/jmeter:5.7.0 \
+            -n -t /tests/my_test_plan.jmx -l /tests/results.jtl
 
-      # Step 5: Generate HTML report
+      # Step 4: Generate HTML report
       - name: Generate HTML Report
         run: |
-          rm -rf html-report
-          ./apache-jmeter/bin/jmeter -g results.jtl -o html-report
+          docker run --rm \
+            -v ${{ github.workspace }}:/tests \
+            justb4/jmeter:5.7.0 \
+            -g /tests/results.jtl -o /tests/html-report
 
-      # Step 6: Deploy to GitHub Pages
+      # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./html-report
