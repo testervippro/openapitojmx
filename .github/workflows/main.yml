@@ -11,31 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Pull JMeter Docker image
       - name: Pull JMeter Docker image
-        run: docker pull justb4/jmeter
+        run: docker pull justb4/jmeter:5.5
 
-      # Step 3: Run JMeter test plan
       - name: Run JMeter Test
         run: |
+          # Remove old results file
+          rm -f ${{ github.workspace }}/results.jtl
+          # Run JMeter test
           docker run --rm \
             -v ${{ github.workspace }}:/mnt/jmeter \
             justb4/jmeter:5.5 \
             -n -t /mnt/jmeter/my_test_plan.jmx -l /mnt/jmeter/results.jtl
 
-      # Step 4: Generate HTML report
       - name: Generate HTML Report
         run: |
+          # Remove old HTML report folder
+          rm -rf ${{ github.workspace }}/html-report
+          # Generate new HTML report
           docker run --rm \
             -v ${{ github.workspace }}:/mnt/jmeter \
             justb4/jmeter:5.5 \
             -g /mnt/jmeter/results.jtl -o /mnt/jmeter/html-report
 
-      # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
